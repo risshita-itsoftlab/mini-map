@@ -19,6 +19,7 @@
 // };
 
 // export default Door;
+//Heloooooooooooooooooooooooooooooooooooooooooooooooooo jiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 
 import { useGLTF } from "@react-three/drei";
 
