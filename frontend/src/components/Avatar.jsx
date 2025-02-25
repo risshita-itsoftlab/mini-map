@@ -2,9 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { Vector3 } from "three";
-import io from 'socket.io-client';  // Import socket.io-client
+import io from "socket.io-client"; // Import socket.io-client
 
-const socket = io("http://localhost:5173");  // Connect to the backend server
+const socket = io("https://mini-map-yprh.onrender.com"); // Connect to the backend server
 
 const Avatar = () => {
   const modelUrl = "stylized_epic_bull_man_warrior_animated/scene.gltf"; // Hardcoded model URL
@@ -50,7 +50,7 @@ const Avatar = () => {
       setVelocity(newVelocity);
 
       // Emit the movement data to the backend (Socket.io)
-      socket.emit('avatarMovement', {
+      socket.emit("avatarMovement", {
         position: avatarRef.current.position,
         velocity: newVelocity,
       });
@@ -115,14 +115,18 @@ const Avatar = () => {
 
   // Listen for position updates from the server
   useEffect(() => {
-    socket.on('avatarPositionUpdate', (data) => {
+    socket.on("avatarPositionUpdate", (data) => {
       if (avatarRef.current) {
-        avatarRef.current.position.set(data.position.x, data.position.y, data.position.z);
+        avatarRef.current.position.set(
+          data.position.x,
+          data.position.y,
+          data.position.z
+        );
       }
     });
 
     return () => {
-      socket.off('avatarPositionUpdate');
+      socket.off("avatarPositionUpdate");
     };
   }, []);
 
@@ -130,7 +134,6 @@ const Avatar = () => {
 };
 
 export default Avatar;
-
 
 // import React, { useEffect, useRef, useState } from "react";
 // import { useGLTF, useAnimations } from "@react-three/drei";

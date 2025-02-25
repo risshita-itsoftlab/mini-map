@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     // Establish socket connection
-    const socket = io("https://localhost:5173");
+    const socket = io("https://mini-map-yprh.onrender.com");
 
     // Listen for IMU update from the backend
     socket.on("imu-update", (data) => {
