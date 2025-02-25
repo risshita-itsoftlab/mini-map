@@ -8,7 +8,8 @@ import Floor from "./components/Floor";
 import ShoppingRack from "./components/ShoppingRack";
 import Door from "./components/Door";
 import BillingCounter from "./components/BillingCounter";
-import { div } from "three/tsl";
+import io from "socket.io-client";
+import { useEffect } from "react";
 
 const App = () => {
   const floorSize = [88, 100];
@@ -21,6 +22,32 @@ const App = () => {
 
   const numCounters = 9; // Number of counters
   const counterSpacing = 10; // Spacing between counters in the row
+
+  useEffect(() => {
+    // Establish socket connection
+    const socket = io("https://localhost:5173");
+
+    // Listen for IMU update from the backend
+    socket.on("imu-update", (data) => {
+      console.log("Received IMU update:", data);
+      // You can use this data to update your 3D models or trigger events in your app
+    });
+
+    // Simulate sending IMU data to the backend
+    const imuData = {
+      accelData: { x: 1, y: 2, z: 3 },
+      rotationData: { alpha: 0, beta: 0, gamma: 0 },
+      magnetData: { x: 0, y: 0, z: 0 },
+      deltaTime: 0.016, // Assume 60 FPS or you can calculate the delta time dynamically
+    };
+
+    socket.emit("imu-data", imuData);
+
+    // Cleanup socket connection on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <Canvas camera={{ position: [0, 20, 20], fov: 60 }}>
